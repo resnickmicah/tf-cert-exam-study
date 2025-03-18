@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "random_pet" "bucket_name" {
-  length    = 3
+  length    = 5
   separator = "-"
   prefix    = "learning"
 }
@@ -38,7 +38,7 @@ resource "random_pet" "object_names" {
 
   length    = 5
   separator = "_"
-  prefix    = "learning"
+  # prefix    = "learning"
 }
 
 resource "aws_s3_object" "objects" {
@@ -47,6 +47,6 @@ resource "aws_s3_object" "objects" {
   acl          = "public-read"
   key          = "${random_pet.object_names[count.index].id}.txt"
   bucket       = module.s3_bucket.s3_bucket_id
-  content      = "Example object #${count.index}"
+  content      = "Bucket object #${count.index}"
   content_type = "text/plain"
 }
