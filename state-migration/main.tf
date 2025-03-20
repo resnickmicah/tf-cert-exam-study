@@ -4,6 +4,13 @@
 ## Terraform configuration
 
 terraform {
+  cloud {
+    organization = "micah-learn-hcp-terraform"
+    workspaces {
+      name = "learn-terraform-migrate"
+    }
+  }
+
   required_providers {
     random = {
       source  = "hashicorp/random"
