@@ -15,19 +15,21 @@ provider "spotify" {
 }
 
 data "spotify_search_track" "by_artist" {
-  artist = "Dolly Parton"
+  artist = var.artist
   #  album = "Jolene"
   #  name  = "Early Morning Breeze"
 }
 
 resource "spotify_playlist" "playlist" {
-  name        = "Terraform Summer Playlist"
+  name        = "${var.artist} Playlist by Terraform"
   description = "This playlist was created by Terraform"
   public      = true
 
   tracks = [
-    data.spotify_search_track.by_artist.tracks[0].id,
-    data.spotify_search_track.by_artist.tracks[1].id,
-    data.spotify_search_track.by_artist.tracks[2].id,
+    for track in slice(
+      data.spotify_search_track.by_artist.tracks,
+      0,
+      min(var.number_of_tracks, length(data.spotify_search_track.by_artist.tracks))
+    ) : track.id
   ]
 }
